@@ -33,7 +33,10 @@ dependencies {
 
    // implementation 'org.parceler:parceler-api:1.1.11'
    // annotationProcessor 'org.parceler:parceler:1.1.11'
+    //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 }

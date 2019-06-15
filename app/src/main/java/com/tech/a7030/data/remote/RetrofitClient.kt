@@ -2,6 +2,7 @@ package com.tech.a7030.data.remote
 
 import retrofit2.Retrofit
 import android.R.attr.data
+import com.tech.a7030.data.model.Response
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -27,5 +28,5 @@ class RetrofitClient {
 
 interface RetrofitInterface {
     @GET("")
-    fun getUsers(): Call<List<>>
+    fun getUsers(): Call<List<Response>>
 }
