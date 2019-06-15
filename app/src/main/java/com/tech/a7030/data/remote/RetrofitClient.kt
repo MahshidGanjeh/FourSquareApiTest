@@ -2,10 +2,12 @@ package com.tech.a7030.data.remote
 
 import retrofit2.Retrofit
 import android.R.attr.data
+import com.tech.a7030.data.model.Example
 import com.tech.a7030.data.model.Response
 import retrofit2.Call
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-
+import android.R.attr.data
 
 
 
@@ -19,7 +21,7 @@ class RetrofitClient {
         if (retrofit == null) {
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
         return retrofit
@@ -27,6 +29,10 @@ class RetrofitClient {
 }
 
 interface RetrofitInterface {
-    @GET("")
-    fun getUsers(): Call<List<Response>>
+    @GET()
+    fun getVenues(): Call<Example>
+
+
+    // @GET("/posts")
+    //fun getPosts(@Query("userId") userId: Int): Call<List<Post>>
 }
