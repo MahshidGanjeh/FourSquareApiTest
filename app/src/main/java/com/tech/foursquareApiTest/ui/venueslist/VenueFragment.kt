@@ -44,7 +44,7 @@ class VenueFragment : Fragment(), VenueContract.View {
         mRecyclerView = view.findViewById(com.tech.foursquareApiTest.R.id.venue_list_recycler)
         mRecyclerView.setLayoutManager(LinearLayoutManager(view.getContext()));
 
-        mPresenter.loadData()
+        mPresenter.loadData(this!!.activity!!)
 
     }
 

@@ -1,5 +1,6 @@
 package com.tech.foursquareApiTest.ui.venueslist
 
+import android.content.Context
 import com.tech.foursquareApiTest.data.VenueRepository
 import com.tech.foursquareApiTest.data.model.Venue
 
@@ -9,7 +10,7 @@ class VenuePresenter(val tView: VenueContract.View) : VenueContract.Presenter {
     var repo = VenueRepository()
 
 
-    override fun loadData() {
+    override fun loadData(context: Context) {
 
         mView = tView
 
@@ -22,7 +23,7 @@ class VenuePresenter(val tView: VenueContract.View) : VenueContract.Presenter {
             override fun onFail() {
 
             }
-        })
+        },context)
 
     }
 }

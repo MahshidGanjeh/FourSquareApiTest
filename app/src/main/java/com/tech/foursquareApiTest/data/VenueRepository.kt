@@ -1,5 +1,6 @@
 package com.tech.foursquareApiTest.data
 
+import android.content.Context
 import android.widget.Toast
 import com.tech.foursquareApiTest.data.model.Example
 import com.tech.foursquareApiTest.data.model.Venue
@@ -16,9 +17,10 @@ class VenueRepository {
     var CLIENT_ID = "3TVQHARU45IF4YSJO4U4OUH2IEBWD5AJUZFWW1XHXYNA4XNC";
     var CLIENT_SECRET = "BSKNTD2PRL5T2QDPSFJWZMIUAKC3DQE5MHEAO3BG1ZDJUJE5"
 
-    fun fetchVenues(callback: ApiResult) {
+    fun fetchVenues(callback: ApiResult,context: Context) {
 
-        var retrofit = RetrofitClient().getClient()
+
+        var retrofit = RetrofitClient().getClient(context)
         var service = retrofit?.create(GetApiService::class.java)
 
         var call = service?.getVenues(

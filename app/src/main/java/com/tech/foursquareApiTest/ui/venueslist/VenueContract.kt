@@ -1,5 +1,6 @@
 package com.tech.foursquareApiTest.ui.venueslist
 
+import android.content.Context
 import com.tech.foursquareApiTest.data.model.Venue
 
 interface VenueContract {
@@ -9,6 +10,6 @@ interface VenueContract {
     }
 
     interface Presenter {
-        fun loadData()
+        fun loadData(context: Context)
     }
 }
