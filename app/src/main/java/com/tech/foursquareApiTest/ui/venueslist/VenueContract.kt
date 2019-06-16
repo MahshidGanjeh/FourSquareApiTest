@@ -5,7 +5,7 @@ import com.tech.foursquareApiTest.data.model.Venue
 interface VenueContract {
 
     interface View {
-        fun showVenues(list: List<Venue>)
+        fun showVenues(list: MutableList<Venue>)
     }
 
     interface Presenter {

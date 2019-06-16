@@ -9,13 +9,6 @@ import com.tech.foursquareApiTest.data.model.Venue
 
 class VenueAdapter(val list: MutableList<Venue>, val context: Context) : RecyclerView.Adapter<VenueViewHolder>() {
 
-    // private var mVenueList: MutableList<Venue> = mutableListOf()
-
-    /*fun VenueAdapter( list: MutableList<Venue>,context: Context) {
-        mInflater = LayoutInflater.from(context)
-        mVenueList = list
-    }*/
-
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): VenueViewHolder {
         var mInflater = LayoutInflater.from(context)
         var myView = mInflater.inflate(R.layout.venue_item, p0, false)
