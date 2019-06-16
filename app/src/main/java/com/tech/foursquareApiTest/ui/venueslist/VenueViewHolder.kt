@@ -6,17 +6,13 @@ import android.view.View
 import android.widget.TextView
 import com.tech.foursquareApiTest.R
 import com.tech.foursquareApiTest.data.model.Venue
+import kotlinx.android.synthetic.main.venue_item.view.*
 
 
 class VenueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    lateinit var mNameTextView: TextView
-    lateinit var mAddressTextView: TextView
-
-    fun VenueViewHolder() {
-        mNameTextView = itemView.findViewById(R.id.venue_name_tv)
-        mAddressTextView = itemView.findViewById(R.id.venue_address_tv)
-    }
+    var mNameTextView = itemView.venue_name_tv
+    var mAddressTextView = itemView.venue_address_tv
 
     fun onBind(venue: Venue) {
         mNameTextView.setText(venue.getName())

@@ -12,10 +12,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var manager = supportFragmentManager
-        var venue = VenueFragment()
+        var venueFragment = VenueFragment()
         manager
             .beginTransaction()
-            .replace(R.id.parent, venue)
+            .replace(R.id.parent, venueFragment)
             .commit()
 
     }
