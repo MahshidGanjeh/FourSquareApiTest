@@ -6,8 +6,9 @@
               tools:context=".ui.venueslist.VenueFragment">
 
     <android.support.v7.widget.RecyclerView
+            android:id="@+id/venue_list_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
+            android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
