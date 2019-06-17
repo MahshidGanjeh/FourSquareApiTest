@@ -1,6 +1,5 @@
 package com.tech.foursquareApiTest.ui.venueslist
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,14 +16,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-
-import com.tech.foursquareApiTest.data.model.Example
 import com.tech.foursquareApiTest.data.model.Venue
 import com.tech.foursquareApiTest.R
-
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -40,11 +34,7 @@ class VenueFragment : Fragment(), VenueContract.View {
     protected var mLastLocation: Location? = null
     private var mLatitudeLabel: String? = ""
     private var mLongitudeLabel: String? = ""
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
 
-    var isContinue = false
-    var sGPS = false
 
     var permissionStrings = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -55,12 +45,6 @@ class VenueFragment : Fragment(), VenueContract.View {
     override fun onStart() {
         super.onStart()
 
-        locationRequest = LocationRequest.create()
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000) // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000) // 5 seconds
-
-
         if (ActivityCompat.checkSelfPermission(
                 activity!!, permissionStrings[0]
             ) != PackageManager.PERMISSION_GRANTED
@@ -70,10 +54,9 @@ class VenueFragment : Fragment(), VenueContract.View {
         ) {
             // request for permission
             ActivityCompat.requestPermissions(
-                activity!!, arrayOf(permissionStrings[1]),
+                activity!!, permissionStrings,
                 REQUEST_LOCATION_PERMISSIONS_CODE
             )
-
         } else {
             // already permission granted
             getLastLocation()
@@ -83,6 +66,7 @@ class VenueFragment : Fragment(), VenueContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         return inflater.inflate(R.layout.fragment_venue, container, false)
     }
 
@@ -103,11 +87,11 @@ class VenueFragment : Fragment(), VenueContract.View {
 
     @SuppressLint("MissingPermission")
     fun getLastLocation() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+
         mFusedLocationClient?.lastLocation
             ?.addOnSuccessListener(activity!!, object : OnSuccessListener<Location> {
                 override fun onSuccess(p0: Location?) {
-                    if (mLastLocation != null) {
+                    if (p0 != null) {
                         mLastLocation = p0
                         mLatitudeLabel = mLastLocation?.latitude.toString()
                         mLongitudeLabel = mLastLocation?.longitude.toString()
