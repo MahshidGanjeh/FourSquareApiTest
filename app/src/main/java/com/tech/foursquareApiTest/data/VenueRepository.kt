@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class VenueRepository {
+class VenueRepository(val lat: String, val lng: String) {
 
     lateinit var mVenueList: MutableList<Venue>
     var CLIENT_ID = "3TVQHARU45IF4YSJO4U4OUH2IEBWD5AJUZFWW1XHXYNA4XNC";
@@ -19,12 +19,11 @@ class VenueRepository {
 
     fun fetchVenues(callback: ApiResult, context: Context) {
 
-
         var retrofit = RetrofitClient().getClient(context)
         var service = retrofit?.create(GetApiService::class.java)
 
         var call = service?.getVenues(
-             "40.7,-74" ,
+            lat + "," + lng,
             CLIENT_ID,
             CLIENT_SECRET,
             "20190502"

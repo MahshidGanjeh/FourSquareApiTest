@@ -4,14 +4,14 @@ import android.content.Context
 import com.tech.foursquareApiTest.data.VenueRepository
 import com.tech.foursquareApiTest.data.model.Venue
 
-class VenuePresenter(val tView: VenueContract.View ) : VenueContract.Presenter {
+class VenuePresenter(val tView: VenueContract.View) : VenueContract.Presenter {
 
     lateinit var mView: VenueContract.View
-    var repo = VenueRepository()
 
 
-    override fun loadData(context: Context) {
+    override fun loadData(context: Context, lat: String, lng: String) {
 
+        var repo = VenueRepository(lat, lng)
         mView = tView
 
         repo.fetchVenues(object : VenueRepository.ApiResult {
@@ -23,7 +23,7 @@ class VenuePresenter(val tView: VenueContract.View ) : VenueContract.Presenter {
             override fun onFail() {
 
             }
-        },context)
+        }, context)
 
     }
 }

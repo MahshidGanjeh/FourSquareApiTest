@@ -10,6 +10,6 @@ interface VenueContract {
     }
 
     interface Presenter {
-        fun loadData(context: Context)
+        fun loadData(context: Context, lat: String, lng: String)
     }
 }

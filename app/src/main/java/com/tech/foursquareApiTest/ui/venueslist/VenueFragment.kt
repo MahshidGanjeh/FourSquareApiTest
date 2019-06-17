@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 
 import com.tech.foursquareApiTest.data.model.Example
@@ -34,7 +35,7 @@ class VenueFragment : Fragment(), VenueContract.View {
     private lateinit var mPresenter: VenuePresenter
     private lateinit var mContext: Context
 
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 1000
+    private val REQUEST_LOCATION_PERMISSIONS_CODE = 1000
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     protected var mLastLocation: Location? = null
     private var mLatitudeLabel: String? = ""
@@ -53,8 +54,6 @@ class VenueFragment : Fragment(), VenueContract.View {
 
     override fun onStart() {
         super.onStart()
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-
 
         locationRequest = LocationRequest.create()
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -71,20 +70,18 @@ class VenueFragment : Fragment(), VenueContract.View {
         ) {
             // request for permission
             ActivityCompat.requestPermissions(
-                activity!!, permissionStrings,
-                REQUEST_PERMISSIONS_REQUEST_CODE
+                activity!!, arrayOf(permissionStrings[1]),
+                REQUEST_LOCATION_PERMISSIONS_CODE
             )
 
         } else {
             // already permission granted
             getLastLocation()
         }
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         return inflater.inflate(R.layout.fragment_venue, container, false)
     }
@@ -98,53 +95,34 @@ class VenueFragment : Fragment(), VenueContract.View {
         mRecyclerView = view.findViewById(com.tech.foursquareApiTest.R.id.venue_list_recycler)
         mRecyclerView.setLayoutManager(LinearLayoutManager(view.getContext()));
 
-        mPresenter.loadData(this!!.activity!!)
-
     }
 
     override fun showVenues(list: MutableList<Venue>) {
         mRecyclerView.adapter = VenueAdapter(list, mContext)
     }
 
-
     @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            1000 -> {
-                if (grantResults.size > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    getLastLocation()
-                } else {
-                    Toast.makeText(activity!!, "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-
-    @SuppressLint("MissingPermission")
-
-    private fun getLastLocation() {
+    fun getLastLocation() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         mFusedLocationClient?.lastLocation
-            ?.addOnCompleteListener(activity!!, object : OnCompleteListener<Location> {
-                override fun onComplete(p0: Task<Location>) {
-                    if (p0.isSuccessful && p0.result != null) {
-                        mLastLocation = p0.result
+            ?.addOnSuccessListener(activity!!, object : OnSuccessListener<Location> {
+                override fun onSuccess(p0: Location?) {
+                    if (mLastLocation != null) {
+                        mLastLocation = p0
                         mLatitudeLabel = mLastLocation?.latitude.toString()
                         mLongitudeLabel = mLastLocation?.longitude.toString()
-                        Toast.makeText(activity!!, mLongitudeLabel, Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(activity!!, "The lang is" + mLongitudeLabel, Toast.LENGTH_SHORT).show()
+                        mPresenter.loadData(activity!!, mLatitudeLabel!!, mLongitudeLabel!!)
                     } else {
-                        Toast.makeText(activity!!, p0.exception.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                            activity!!,
+                            "can't get the current location via fusedlocaion" + mLongitudeLabel,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        mPresenter.loadData(activity!!, "40.7", "-74")
                     }
+
                 }
             })
-
     }
 }
