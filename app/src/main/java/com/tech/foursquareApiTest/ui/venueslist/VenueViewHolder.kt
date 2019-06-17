@@ -17,5 +17,6 @@ class VenueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun onBind(venue: Venue) {
         mNameTextView.setText(venue.getName())
         mAddressTextView.setText(venue.location.address)
+        var iconPath = venue.categories.get(0).icon.suffix + venue.categories.get(0).icon.prefix
     }
 }

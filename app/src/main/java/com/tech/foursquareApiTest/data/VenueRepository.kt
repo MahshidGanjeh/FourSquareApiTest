@@ -13,18 +13,18 @@ import retrofit2.Response
 
 class VenueRepository {
 
-    var mVenueList: MutableList<Venue> = mutableListOf()
+    lateinit var mVenueList: MutableList<Venue>
     var CLIENT_ID = "3TVQHARU45IF4YSJO4U4OUH2IEBWD5AJUZFWW1XHXYNA4XNC";
     var CLIENT_SECRET = "BSKNTD2PRL5T2QDPSFJWZMIUAKC3DQE5MHEAO3BG1ZDJUJE5"
 
-    fun fetchVenues(callback: ApiResult,context: Context) {
+    fun fetchVenues(callback: ApiResult, context: Context) {
 
 
         var retrofit = RetrofitClient().getClient(context)
         var service = retrofit?.create(GetApiService::class.java)
 
         var call = service?.getVenues(
-            "40.7,-74",
+             "40.7,-74" ,
             CLIENT_ID,
             CLIENT_SECRET,
             "20190502"
@@ -35,14 +35,18 @@ class VenueRepository {
                 if (response.code() == 200) {
 
                     var num: Int? = response.body()?.response?.totalResults
+                    mVenueList = mutableListOf()
 
                     var items = response.body()
                         ?.response
                         ?.groups
                         ?.get(0)
                         ?.items
-                    for (i: Int in 0..10) {
-                        mVenueList.add(items?.get(i)?.venue!!)
+
+                    var a = items!!.size
+
+                    for (i: Int in 0..a - 1) {
+                        mVenueList.add(i, items?.get(i)?.venue!!)
                     }
 
                     callback.onSuccess(mVenueList)
@@ -54,10 +58,7 @@ class VenueRepository {
                 callback.onFail()
             }
         })
-
-
     }
-
 
     interface ApiResult {
         fun onSuccess(list: MutableList<Venue>)

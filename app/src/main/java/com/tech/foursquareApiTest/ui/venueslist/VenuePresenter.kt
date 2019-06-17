@@ -4,7 +4,7 @@ import android.content.Context
 import com.tech.foursquareApiTest.data.VenueRepository
 import com.tech.foursquareApiTest.data.model.Venue
 
-class VenuePresenter(val tView: VenueContract.View) : VenueContract.Presenter {
+class VenuePresenter(val tView: VenueContract.View ) : VenueContract.Presenter {
 
     lateinit var mView: VenueContract.View
     var repo = VenueRepository()
