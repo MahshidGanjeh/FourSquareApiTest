@@ -17,16 +17,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.location.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 
 import com.tech.foursquareApiTest.data.model.Example
 import com.tech.foursquareApiTest.data.model.Venue
-import com.tech.foursquareApiTest.data.remote.GetApiService
-import com.tech.foursquareApiTest.data.remote.RetrofitClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import com.tech.foursquareApiTest.R
-import com.tech.foursquareApiTest.util.GPSUtil
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -59,19 +56,18 @@ class VenueFragment : Fragment(), VenueContract.View {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
 
-        locationRequest = LocationRequest.create();
+        locationRequest = LocationRequest.create()
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-
-
+        locationRequest.setInterval(10 * 1000) // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000) // 5 seconds
 
 
         if (ActivityCompat.checkSelfPermission(
-                activity!!, permissionStrings[0]) != PackageManager.PERMISSION_GRANTED
+                activity!!, permissionStrings[0]
+            ) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(
-                activity!!, permissionStrings[1]) != PackageManager.PERMISSION_GRANTED
+                activity!!, permissionStrings[1]
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             // request for permission
             ActivityCompat.requestPermissions(
@@ -81,18 +77,7 @@ class VenueFragment : Fragment(), VenueContract.View {
 
         } else {
             // already permission granted
-
-            mFusedLocationClient?.lastLocation?.addOnSuccessListener(
-                activity!!,
-                {
-                    mLastLocation
-                    if (mLastLocation != null) {
-                        mLatitudeLabel = mLastLocation?.latitude.toString()
-                        mLongitudeLabel = mLastLocation?.longitude.toString()
-                        Toast.makeText(activity!!, mLongitudeLabel, Toast.LENGTH_SHORT).show();
-
-                    }
-                })
+            getLastLocation()
         }
     }
 
@@ -110,7 +95,6 @@ class VenueFragment : Fragment(), VenueContract.View {
         mPresenter = VenuePresenter(this)
         mContext = this!!.context!!
 
-        Toast.makeText(activity!!, mLatitudeLabel, Toast.LENGTH_LONG).show()
         mRecyclerView = view.findViewById(com.tech.foursquareApiTest.R.id.venue_list_recycler)
         mRecyclerView.setLayoutManager(LinearLayoutManager(view.getContext()));
 
@@ -135,17 +119,7 @@ class VenueFragment : Fragment(), VenueContract.View {
                 if (grantResults.size > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    mFusedLocationClient?.lastLocation?.addOnSuccessListener(
-                        activity!!,
-                        {
-                            mLastLocation
-                            if (mLastLocation != null) {
-                                mLatitudeLabel = mLastLocation?.latitude.toString()
-                                mLongitudeLabel = mLastLocation?.longitude.toString()
-                                Toast.makeText(activity!!, mLongitudeLabel, Toast.LENGTH_SHORT).show();
-
-                            }
-                        })
+                    getLastLocation()
                 } else {
                     Toast.makeText(activity!!, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
@@ -153,4 +127,24 @@ class VenueFragment : Fragment(), VenueContract.View {
         }
     }
 
+
+    @SuppressLint("MissingPermission")
+
+    private fun getLastLocation() {
+        mFusedLocationClient?.lastLocation
+            ?.addOnCompleteListener(activity!!, object : OnCompleteListener<Location> {
+                override fun onComplete(p0: Task<Location>) {
+                    if (p0.isSuccessful && p0.result != null) {
+                        mLastLocation = p0.result
+                        mLatitudeLabel = mLastLocation?.latitude.toString()
+                        mLongitudeLabel = mLastLocation?.longitude.toString()
+                        Toast.makeText(activity!!, mLongitudeLabel, Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(activity!!, p0.exception.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            })
+
+    }
 }

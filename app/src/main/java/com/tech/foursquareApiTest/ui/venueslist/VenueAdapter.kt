@@ -12,7 +12,7 @@ class VenueAdapter(val list: MutableList<Venue>, val context: Context) : Recycle
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): VenueViewHolder {
         var mInflater = LayoutInflater.from(context)
         var myView = mInflater.inflate(R.layout.venue_item, p0, false)
-        return VenueViewHolder(myView)
+        return VenueViewHolder(myView, context)
     }
 
 

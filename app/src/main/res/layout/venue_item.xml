@@ -3,53 +3,67 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="110dp"
         app:cardCornerRadius="10dp"
-        android:layout_margin="6dp"
->
+        android:layout_margin="5dp">
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:padding="10dp"
-                  android:orientation="vertical">
+                  android:orientation="horizontal">
 
+        <ImageView
+                android:src="@drawable/response"
+                android:id="@+id/venue_icon_imgv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
 
         <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal"
-                      android:layout_marginBottom="3dp">
-
-            <ImageView
-                    android:src="@drawable/ic_location"
-                    android:backgroundTint="#808080"
-                    android:tint="#808080"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"/>
+                      android:layout_height="match_parent"
+                      android:padding="10dp"
+                      android:orientation="vertical">
 
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Furman Street"
+                      android:id="@+id/venue_name_tv"
+                      android:layout_marginTop="3dp"
+                      android:text="Brooklyn Bridge Park"
+                      android:textColor="@color/black"
+                      android:textSize="15sp"
+            />
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_marginBottom="3dp">
+
+                <ImageView
+                        android:src="@drawable/ic_location"
+                        android:backgroundTint="#808080"
+                        android:tint="#808080"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"/>
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Furman Street"
+                          android:textSize="12sp"
+                          android:textColor="#808080"
+                          android:drawableTint="#808080"
+                          android:id="@+id/venue_address_tv"/>
+
+
+            </LinearLayout>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="12 km"
                       android:textSize="12sp"
                       android:textColor="#808080"
                       android:drawableTint="#808080"
-                      android:id="@+id/venue_address_tv"/>
-
+                      android:id="@+id/venue_distance_tv"/>
         </LinearLayout>
 
-        <ImageView android:layout_width="match_parent"
-                   android:layout_height="180dp"
-                   android:src="@drawable/ss"
-                   android:scaleType="fitXY"
-                   android:layout_gravity="center"/>
-
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/venue_name_tv"
-                  android:layout_marginTop="3dp"
-                  android:text="Brooklyn Bridge Park"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-        />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
